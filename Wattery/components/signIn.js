@@ -18,30 +18,41 @@ class SignIn extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container}  behavior="padding" enabled={Platform.OS === 'ios'}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled={Platform.OS === 'ios'}>
         <Text style={styles.title}> Zaloguj się do aplikacji</Text>
-        <TextInput 
+        <TextInput
           style={styles.inputContainer}
           placeholder='Login'
           value={this.state.login}
-          onChangeText={(text) => this.setState({login: text})}
+          onChangeText={(text) => this.setState({ login: text })}
           returnKeyType='next'
         />
-        <TextInput 
+
+        <TextInput
           style={[styles.inputContainer]}
           secureTextEntry
           placeholder='Hasło'
           value={this.state.password}
-          onChangeText={(text) => this.setState({password: text})}
+          onChangeText={(text) => {
+            this.setState({ password: text });
+          }}
+          onBlur={() => {
+            this.state.login.length > 0 && this.state.password.length > 7 ?
+              this.setState({ canSubmit: true }) : this.setState({ canSubmit: false });
+            !this.state.canSubmit ?
+              this.setState({ isPasswordInvalid: true }) : this.setState({ isPasswordInvalid: false });
+          }}
           returnKeyType='done'
         />
-        {this.state.isPasswordInvalid 
+
+        {this.state.isPasswordInvalid
           && <Text style={styles.invalidPassword}>Hasło jest za krótkie</Text>}
-        <BasicButton 
-          title="Login" 
-          style={styles.loginButton} 
+        <BasicButton
+          title="Login"
+          style={styles.loginButton}
           disabled={!this.state.canSubmit}
-          onPress={() => console.log('Log in')}
+          onPress={() => console.log('Log in')
+          }
         />
       </KeyboardAvoidingView>
     );
